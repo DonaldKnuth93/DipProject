@@ -1,5 +1,6 @@
 import cv2
 from matplotlib import pyplot as plt
+from numpy.core.defchararray import lower, upper
 
 eggImg = cv2.imread("img/egg2.jpg")
 
@@ -26,3 +27,13 @@ plt.imshow(threshEggOTSU, cmap="gray")
 # plt.figure("Triangle Egg Image")
 # plt.imshow(threshEggTriangle, cmap="gray")
 plt.show()
+
+kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (10, 5))
+closed = cv2.morphologyEx(threshEggOTSU, cv2.MORPH_CLOSE, kernel)
+cv2.imshow('', closed)
+
+closed = cv2.erode(closed, None, iterations=14)
+closed = cv2.dilate(closed, None, iterations=13)
+
+edged = cv2.Canny(eggImg, lower, upper)
+canny = auto_canny(closed)
